@@ -92,7 +92,9 @@ class DemoExtendGrid extends Module
                     'use_inline_display' => true,
                 ])
         );
-        //@todo: actually button is not working yet, because javascript part is missing (SubmitRowActionExtension)
+        // Button is not working by default, because SubmitRowActionExtension component is not loaded in Orders grid javascript part.
+        // To replace that behavior there is an example of custom javascript in views/orders-listing.js
+        // Adding grid extension in non-compiled javascript is not supported yet, we hope to fix it in future.
     }
 
     private function getActionsColumn(GridDefinitionInterface $gridDefinition): ColumnInterface
