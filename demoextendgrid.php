@@ -30,7 +30,7 @@ class DemoExtendGrid extends Module
         $this->name = 'demoextendgrid';
         $this->author = 'PrestaShop';
         $this->version = '1.0.0';
-        $this->ps_versions_compliancy = ['min' => '1.7.7.0', 'max' => _PS_VERSION_];
+        $this->ps_versions_compliancy = ['min' => '1.7.8.0', 'max' => _PS_VERSION_];
 
         parent::__construct();
 
@@ -50,6 +50,23 @@ class DemoExtendGrid extends Module
         $installer = new Installer();
 
         return $installer->install($this);
+    }
+
+    public function hookActionAdminControllerSetMedia(array $params)
+    {
+        // check if it is orders controller
+        if ($this->context->controller->controller_name !== 'AdminOrders') {
+            return;
+        }
+        $action = Tools::getValue('action');
+
+        // check if it is orders index page (we want to skip if it is `order create` or `order view` page)
+        if ($action === 'vieworder' || $action === 'addorder') {
+            return;
+        }
+
+        // now we are sure it is Orders index (listing) page where we need our javascript
+        $this->context->controller->addJS('modules/' . $this->name . '/views/js/orders-listing.js');
     }
 
     /**
